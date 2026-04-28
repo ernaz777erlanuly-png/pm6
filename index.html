@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CMS (Joomla/Drupal/WordPress) — 30 рандом сұрақ</title>
+  <title>CMS — 150 сұрақ, 30 рандом (жауап бірден)</title>
   <style>
     :root{
       --bg:#0b1220;
@@ -29,7 +29,6 @@
       background:var(--btn2); font-weight:600;
     }
     button.primary{background:var(--btn);}
-    button:disabled{opacity:.55; cursor:not-allowed;}
     .stat{margin-left:auto; color:var(--muted); font-size:14px;}
     .grid{display:flex; flex-direction:column; gap:12px; margin-top:14px;}
     .qcard{
@@ -55,11 +54,19 @@
     .opt .letter{width:22px; color:var(--muted); font-weight:700;}
     .note{margin-top:10px; font-size:13px; color:var(--muted);}
     .result{
-      margin-top:8px; padding:10px; border-radius:10px; border:1px solid var(--border);
+      margin-top:10px; padding:10px; border-radius:10px; border:1px solid var(--border);
       font-size:13px;
     }
     .good{border-color:rgba(31,157,85,.5); background:rgba(31,157,85,.12);}
     .bad{border-color:rgba(229,83,83,.55); background:rgba(229,83,83,.10);}
+    label.opt.correct {
+      border-color: rgba(31,157,85,.55);
+      background: rgba(31,157,85,.10);
+    }
+    label.opt.wrong {
+      border-color: rgba(229,83,83,.60);
+      background: rgba(229,83,83,.10);
+    }
     .key{color:var(--muted); font-size:12px; margin-top:6px;}
     .footer{color:var(--muted); font-size:13px; margin-top:18px;}
     .pill{display:inline-block; padding:2px 8px; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.05);}
@@ -67,11 +74,10 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>CMS (Joomla/Drupal/WordPress) — сессияға дайындық: <span class="pill">30 рандом сұрақ</span></h1>
+    <h1>CMS — сессияға дайындық: <span class="pill">150 сұрақ</span> → <span class="pill">30 рандом</span> (жауап бірден)</h1>
 
     <div class="topbar">
       <button class="primary" id="btnNew">Жаңа 30 сұрақ</button>
-      <button id="btnCheck">Тексеру</button>
       <button id="btnReset">Таңдауларды тазалау</button>
       <div class="stat" id="stat">Дайын.</div>
     </div>
@@ -79,608 +85,262 @@
     <div class="grid" id="quiz"></div>
 
     <div class="footer">
-      Кеңейту үшін: кодтың ішіндегі <b>BANK</b> массивіне жаңа сұрақтарды қоса бер.
+      Банкте барлығы <b>150</b> сұрақ. Әр ашқан сайын <b>30</b> рандом таңдалады.
     </div>
   </div>
 
 <script>
 /**
- * Формат:
- * {
- *   topic: "Joomla/Drupal/Security/WP",
- *   q: "Сұрақ мәтіні",
- *   options: ["A) ...","B) ...", ...],
- *   correct: 2 // 0-based индекс (A=0, B=1, C=2, D=3, E=4)
- * }
+ * Формат: { topic:"...", q:"...", options:["A)...","B)...",...], correct:2 } (0-based)
+ * Барлығы 150 сұрақ
  */
 const BANK = [
-  // --- Joomla ---
-  {
-    topic:"Joomla",
-    q:"Joomla конфигурациясына қай файл жауапты?",
-    options:["A) configuration.txt","B) config.php","C) configuration.php","D) settings.php","E) site_config.php"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-да мазмұнды құру және басқару үшін қандай компонент қолданылады?",
-    options:["A) Article Manager","B) Module Manager","C) Plugin Manager","D) User Manager","E) Media Manager"],
-    correct:0
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla модулі дегеніміз не?",
-    options:["A) функционалдылықты өзгертуге арналған қосымша","B) пайдаланушы интерфейсінің элементі","C) пайдаланушыны басқару құралы","D) медиа файлдарды басқару қызметі","E) мәзірді басқару құралы"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-дағы кеңейтімдердің қай түрі сайтқа жаңа функционалдылықты қосуға мүмкіндік береді?",
-    options:["A) Компоненттер","B) Шаблондар","C) Модульдер","D) Плагиндер","E) Кітапханалар"],
-    correct:0
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla жүйесінде кеңейтімдерді орнату үшін қандай әдіс қолданылады?",
-    options:["A) FTP","B) URL","C) Пакеттік файл","D) SSH","E) API"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla үлгісіндегі қай файл CSS мәнерлеріне жауап береді?",
-    options:["A) style.css","B) template.css","C) theme.css","D) main.css","E) design.css"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Мультимедианы басқару үшін қандай Joomla құралы пайдаланылады?",
-    options:["A) Article Manager","B) Media Manager","C) Module Manager","D) Plugin Manager","E) Template Manager"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-ның қай нұсқасы MVC қолдауын алғаш рет енгізді?",
-    options:["A) Джумла 1.0","B) Джумла 1.5","C) Джумла 2.5","D) Джумла 3.0","E) Джумла 3.5"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla шаблондарын жасау үшін қай тіл қолданылады?",
-    options:["A) HTML және CSS","B) PHP және HTML","C) JavaScript және HTML","D) Python және HTML","E) Ruby және HTML"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla мақалалары қайда сақталады?",
-    options:["A) модульдерде","B) плагиндерде","C) компоненттерде","D) мәліметтер базасында","E) конфигурация файлдарында"],
-    correct:3
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-ны жаңа нұсқаға жаңарту процесі қалай аталады?",
-    options:["A) Upgrade","B) Update","C) Refresh","D) Reload","E) Patch"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-да суреттерді сақтау үшін қандай деректер түрі қолданылады?",
-    options:["A) мәліметтер базасы","B) сервердегі файлдар","C) мәтіндік файлдар","D) XML файлдары","E) JSON файлдары"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Төмендегілердің қайсысы Joomla-дағы стандартты модуль емес?",
-    options:["A) Menu","B) Login Form","C) Latest Articles","D) Weather Forecast","E) Breadcrumbs"],
-    correct:3
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla 4 жұмыс істеуі үшін PHP-дің қай нұсқасы минималды қажет?",
-    options:["A) 5.6","B) 7.2.5","C) 7.4","D) 8.0","E) 8.1"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-да пайдаланушыларды басқару үшін қандай компонент қолданылады?",
-    options:["A) Article Manager","B) Module Manager","C) User Manager","D) Plugin Manager","E) Media Manager"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Қандай Joomla кеңейтімі пішіндер жасауға мүмкіндік береді?",
-    options:["A) Form Creator","B) Form Builder","C) RSForm! Pro","D) Contact Form Manager","E) Form Manager"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla сайтының сақтық көшірмесін жасауға қандай кеңейтім мүмкіндік береді?",
-    options:["A) Backup Wizard","B) Backup Master","C) Akeeba Backup","D) Site Saver","E) Joomla Backup"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla үлгісі туралы барлық деректерді қамтитын файл құрылымы қалай аталады?",
-    options:["A) theme","B) template","C) style","D) design","E) layout"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Модульдерді көрсету ретін өзгертуге қандай функция жауап береді?",
-    options:["A) Publish Order","B) Display Sequence","C) Ordering","D) Sorting","E) Arrangement"],
-    correct:2
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla контекстінде \"ACL\" дегеніміз не?",
-    options:["A) Automatic Content Loader","B) Access Control List","C) Advanced Content Library","D) Access Configuration Layer","E) Automated Control Logic"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Дерекқор конфигурациясын қолмен реттеу үшін қандай файлды өзгерту керек?",
-    options:["A) settings.php","B) configuration.php","C) db_config.php","D) database.php","E) sql_config.php"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-да мәзір жасау үшін қандай компонент қолданылады?",
-    options:["A) Menu Builder","B) Menu Manager","C) Navigation Creator","D) Menu Organizer","E) Menu Designer"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-ны веб-интерфейс арқылы орнату үшін қандай протокол қолданылады?",
-    options:["A) HTTP/1.0","B) HTTP/1.1","C) FTP","D) SSH","E) SFTP"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-ны серверге орнатуға қандай файл жауапты?",
-    options:["A) install.php","B) setup.php","C) installation.php","D) index.php","E) start.php"],
-    correct:3
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-та кеңейтімдер (extensions) деген не?",
-    options:["A) CSS файлдары","B) Қосымша функционал модульдер","C) Дерекқор","D) Сервер","E) URL"],
-    correct:1
-  },
-  {
-    topic:"Joomla",
-    q:"Joomla-та extensions қайдан орнатылады?",
-    options:["A) FTP ғана","B) Admin панельден","C) CSS арқылы","D) SQL арқылы","E) HTML арқылы"],
-    correct:1
-  },
+  // ========== Joomla (30 сұрақ) ==========
+  { topic:"Joomla", q:"Joomla конфигурациясына қай файл жауапты?", options:["A) configuration.txt","B) config.php","C) configuration.php","D) settings.php","E) site_config.php"], correct:2 },
+  { topic:"Joomla", q:"Joomla-да мазмұнды құру және басқару үшін қандай компонент қолданылады?", options:["A) Article Manager","B) Module Manager","C) Plugin Manager","D) User Manager","E) Media Manager"], correct:0 },
+  { topic:"Joomla", q:"Joomla модулі дегеніміз не?", options:["A) функционалдылықты өзгертуге арналған қосымша","B) пайдаланушы интерфейсінің элементі","C) пайдаланушыны басқару құралы","D) медиа файлдарды басқару қызметі","E) мәзірді басқару құралы"], correct:1 },
+  { topic:"Joomla", q:"Joomla-дағы кеңейтімдердің қай түрі сайтқа жаңа функционалдылықты қосуға мүмкіндік береді?", options:["A) Компоненттер","B) Шаблондар","C) Модульдер","D) Плагиндер","E) Кітапханалар"], correct:0 },
+  { topic:"Joomla", q:"Joomla жүйесінде кеңейтімдерді орнату үшін қандай әдіс қолданылады?", options:["A) FTP","B) URL","C) Пакеттік файл","D) SSH","E) API"], correct:2 },
+  { topic:"Joomla", q:"Joomla үлгісіндегі қай файл CSS мәнерлеріне жауап береді?", options:["A) style.css","B) template.css","C) theme.css","D) main.css","E) design.css"], correct:1 },
+  { topic:"Joomla", q:"Мультимедианы басқару үшін қандай Joomla құралы пайдаланылады?", options:["A) Article Manager","B) Media Manager","C) Module Manager","D) Plugin Manager","E) Template Manager"], correct:1 },
+  { topic:"Joomla", q:"Joomla-ның қай нұсқасы MVC қолдауын алғаш рет енгізді?", options:["A) Джумла 1.0","B) Джумла 1.5","C) Джумла 2.5","D) Джумла 3.0","E) Джумла 3.5"], correct:1 },
+  { topic:"Joomla", q:"Joomla шаблондарын жасау үшін қай тіл қолданылады?", options:["A) HTML және CSS","B) PHP және HTML","C) JavaScript және HTML","D) Python және HTML","E) Ruby және HTML"], correct:1 },
+  { topic:"Joomla", q:"Төменде келтірілген мәзір түрлерінің қайсысы Joomla-да жоқ?", options:["A) Single Article","B) Category Blog","C) Category List","D) Front Page","E) External URL"], correct:3 },
+  { topic:"Joomla", q:"Joomla мақалалары қайда сақталады?", options:["A) модульдерде","B) плагиндерде","C) компоненттерде","D) мәліметтер базасында","E) конфигурация файлдарында"], correct:3 },
+  { topic:"Joomla", q:"Joomla-ны жаңа нұсқаға жаңарту процесі қалай аталады?", options:["A) Upgrade","B) Update","C) Refresh","D) Reload","E) Patch"], correct:1 },
+  { topic:"Joomla", q:"Joomla-да суреттерді сақтау үшін қандай деректер түрі қолданылады?", options:["A) мәліметтер базасы","B) сервердегі файлдар","C) мәтіндік файлдар","D) XML файлдары","E) JSON файлдары"], correct:1 },
+  { topic:"Joomla", q:"Төмендегілердің қайсысы Joomla-дағы стандартты модуль емес?", options:["A) Menu","B) Login Form","C) Latest Articles","D) Weather Forecast","E) Breadcrumbs"], correct:3 },
+  { topic:"Joomla", q:"Joomla 4 жұмыс істеуі үшін PHP-дің қай нұсқасы минималды қажет?", options:["A) 5.6","B) 7.2.5","C) 7.4","D) 8.0","E) 8.1"], correct:1 },
+  { topic:"Joomla", q:"Joomla-да пайдаланушыларды басқару үшін қандай компонент қолданылады?", options:["A) Article Manager","B) Module Manager","C) User Manager","D) Plugin Manager","E) Media Manager"], correct:2 },
+  { topic:"Joomla", q:"Қандай Joomla кеңейтімі пішіндер жасауға мүмкіндік береді?", options:["A) Form Creator","B) Form Builder","C) RSForm! Pro","D) Contact Form Manager","E) Form Manager"], correct:2 },
+  { topic:"Joomla", q:"Joomla сайтының сақтық көшірмесін жасауға қандай кеңейтім мүмкіндік береді?", options:["A) Backup Wizard","B) Backup Master","C) Akeeba Backup","D) Site Saver","E) Joomla Backup"], correct:2 },
+  { topic:"Joomla", q:"Joomla үлгісі туралы барлық деректерді қамтитын файл құрылымы қалай аталады?", options:["A) theme","B) template","C) style","D) design","E) layout"], correct:1 },
+  { topic:"Joomla", q:"Модульдерді көрсету ретін өзгертуге қандай функция жауап береді?", options:["A) Publish Order","B) Display Sequence","C) Ordering","D) Sorting","E) Arrangement"], correct:2 },
+  { topic:"Joomla", q:"Joomla-ға электрондық поштаны жіберуге қандай компонент жауапты?", options:["A) Mail Sender","B) Mass Mail","C) Email Manager","D) SMTP Client","E) Mail Client"], correct:1 },
+  { topic:"Joomla", q:"Сайт мазмұнын іздеу жүйелерімен синхрондау процесі қалай аталады?", options:["A) SEO","B) Indexing","C) Search Engine Submission","D) Meta Tagging","E) Site Mapping"], correct:2 },
+  { topic:"Joomla", q:"Дерекқор конфигурациясын қолмен реттеу үшін қандай файлды өзгерту керек?", options:["A) settings.php","B) configuration.php","C) db_config.php","D) database.php","E) sql_config.php"], correct:1 },
+  { topic:"Joomla", q:"Joomla-да мәзір жасау үшін қандай компонент қолданылады?", options:["A) Menu Builder","B) Menu Manager","C) Navigation Creator","D) Menu Organizer","E) Menu Designer"], correct:1 },
+  { topic:"Joomla", q:"Joomla үшін қандай жаңарту әдісі қолданылады?", options:["A) Upgrade","B) Update","C) Refresh","D) Reload","E) Patch"], correct:1 },
+  { topic:"Joomla", q:"Joomla контекстінде \"ACL\" дегеніміз не?", options:["A) Automatic Content Loader","B) Access Control List","C) Advanced Content Library","D) Access Configuration Layer","E) Automated Control Logic"], correct:1 },
+  { topic:"Joomla", q:"Joomla-ны веб-интерфейс арқылы орнату үшін қандай протокол қолданылады?", options:["A) HTTP/1.0","B) HTTP/1.1","C) FTP","D) SSH","E) SFTP"], correct:1 },
+  { topic:"Joomla", q:"Joomla-ны серверге орнатуға қандай файл жауапты?", options:["A) install.php","B) setup.php","C) installation.php","D) index.php","E) start.php"], correct:3 },
+  { topic:"Joomla", q:"Joomla-да мақалаларды жариялау жүйесі қалай аталады?", options:["A) Publication System","B) Content Management System","C) Article Publishing System","D) Article Management System","E) Content Publishing System"], correct:1 },
+  { topic:"Joomla", q:"Joomla-та кеңейтімдер (extensions) деген не?", options:["A) CSS файлдары","B) Қосымша функционал модульдер","C) Дерекқор","D) Сервер","E) URL"], correct:1 },
+  { topic:"Joomla", q:"Joomla-та extensions қайдан орнатылады?", options:["A) FTP ғана","B) Admin панельден","C) CSS арқылы","D) SQL арқылы","E) HTML арқылы"], correct:1 },
 
-  // --- Drupal ---
-  {
-    topic:"Drupal",
-    q:"Drupal дегеніміз не?",
-    options:["A) ОЖ","B) CMS","C) Бағдарламалау тілі","D) Браузер","E) Деректер базасы"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal негізінен қай тілде жазылған?",
-    options:["A) Java","B) Python","C) PHP","D) C#","E) Ruby"],
-    correct:2
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да View деген не?",
-    options:["A) Дерекқор","B) Мазмұнды көрсету құралы","C) Плагин","D) Сервер","E) Блок"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal ядросы қалай аталады?",
-    options:["A) Engine","B) Core","C) Base","D) Kernel","E) System"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да қосымша функциялар қалай қосылады?",
-    options:["A) Plugins","B) Modules","C) Scripts","D) Themes","E) Widgets"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да дизайн қалай аталады?",
-    options:["A) Template","B) Style","C) Theme","D) Layout","E) Skin"],
-    correct:2
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да пайдаланушы рөлі қалай аталады?",
-    options:["A) Group","B) Role","C) Level","D) User type","E) Class"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal лицензиясы қандай?",
-    options:["A) MIT","B) GPL","C) Apache","D) BSD","E) Commercial"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal деректері қайда сақталады?",
-    options:["A) Файлдарда","B) XML-де","C) Деректер базасында","D) JSON-де","E) Cache-та"],
-    correct:2
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да Block деген не?",
-    options:["A) Код","B) Контент бөлігі","C) Плагин","D) Файл","E) Сервер"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да URL басқару жүйесі қалай аталады?",
-    options:["A) Path","B) Link","C) Route","D) Address","E) SEO"],
-    correct:2
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да контент түрлері қалай аталады?",
-    options:["A) Types","B) Content types","C) Nodes","D) Pages","E) Blocks"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да іздеу жүйесі бар ма?",
-    options:["A) Жоқ","B) Иә (Search module)","C) Тек сыртқы","D) API арқылы","E) Plugin керек емес"],
-    correct:1
-  },
-  {
-    topic:"Drupal",
-    q:"Drupal-да кеш (cache) не үшін керек?",
-    options:["A) Дизайн","B) Жылдамдықты арттыру","C) Файл сақтау","D) Пошта","E) Блоктар"],
-    correct:1
-  },
+  // ========== Drupal (15 сұрақ) ==========
+  { topic:"Drupal", q:"Drupal дегеніміз не?", options:["A) ОЖ","B) CMS","C) Бағдарламалау тілі","D) Браузер","E) Деректер базасы"], correct:1 },
+  { topic:"Drupal", q:"Drupal негізінен қай тілде жазылған?", options:["A) Java","B) Python","C) PHP","D) C#","E) Ruby"], correct:2 },
+  { topic:"Drupal", q:"Drupal-да View деген не?", options:["A) Дерекқор","B) Мазмұнды көрсету құралы","C) Плагин","D) Сервер","E) Блок"], correct:1 },
+  { topic:"Drupal", q:"Drupal ядросы қалай аталады?", options:["A) Engine","B) Core","C) Base","D) Kernel","E) System"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да қосымша функциялар қалай қосылады?", options:["A) Plugins","B) Modules","C) Scripts","D) Themes","E) Widgets"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да дизайн қалай аталады?", options:["A) Template","B) Style","C) Theme","D) Layout","E) Skin"], correct:2 },
+  { topic:"Drupal", q:"Drupal-да пайдаланушы рөлі қалай аталады?", options:["A) Group","B) Role","C) Level","D) User type","E) Class"], correct:1 },
+  { topic:"Drupal", q:"Drupal құқықтарды басқару жүйесі қалай аталады?", options:["A) ACL","B) Permissions system","C) Access control","D) Security layer","E) User manager"], correct:1 },
+  { topic:"Drupal", q:"Drupal лицензиясы қандай?", options:["A) MIT","B) GPL","C) Apache","D) BSD","E) Commercial"], correct:1 },
+  { topic:"Drupal", q:"Drupal деректері қайда сақталады?", options:["A) Файлдарда","B) XML-де","C) Деректер базасында","D) JSON-де","E) Cache-та"], correct:2 },
+  { topic:"Drupal", q:"Drupal-да Block деген не?", options:["A) Код","B) Контент бөлігі","C) Плагин","D) Файл","E) Сервер"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да меню жасау жүйесі қалай аталады?", options:["A) Navigation","B) Menu system","C) Link manager","D) Path system","E) Page system"], correct:1 },
+  { topic:"Drupal", q:"Drupal кеңейтімдері қалай аталады?", options:["A) Extensions","B) Modules","C) Plugins","D) Addons","E) Tools"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да файлдарды басқару модулі қалай аталады?", options:["A) File manager","B) Media","C) Upload system","D) Asset manager","E) Storage"], correct:1 },
+  { topic:"Drupal", q:"Drupal негізгі мақсаты қандай?", options:["A) Ойын жасау","B) CMS","C) ОЖ жасау","D) Антивирус","E) Дерекқор"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да URL басқару жүйесі қалай аталады?", options:["A) Path","B) Link","C) Route","D) Address","E) SEO"], correct:2 },
+  { topic:"Drupal", q:"Drupal-да контент түрлері қалай аталады?", options:["A) Types","B) Content types","C) Nodes","D) Pages","E) Blocks"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да іздеу жүйесі бар ма?", options:["A) Жоқ","B) Иә (Search module)","C) Тек сыртқы","D) API арқылы","E) Plugin керек емес"], correct:1 },
+  { topic:"Drupal", q:"Drupal-да қолданушыны басқару құралы қалай аталады?", options:["A) User manager","B) Account system","C) Role system","D) User module","E) Access tool"], correct:3 },
+  { topic:"Drupal", q:"Drupal-да кеш (cache) не үшін керек?", options:["A) Дизайн","B) Жылдамдықты арттыру","C) Файл сақтау","D) Пошта","E) Блоктар"], correct:1 },
 
-  // --- Security / жалпы CMS қауіпсіздігі ---
-  {
-    topic:"Security",
-    q:"CMS жүйелеріндегі ең кең таралған шабуыл түрі қандай?",
-    options:["A) CSS Injection","B) SQL Injection","C) Image attack","D) Font attack","E) Cache overflow"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"XSS (Cross-Site Scripting) шабуылының мақсаты қандай?",
-    options:["A) Серверді өшіру","B) Зиянды JavaScript енгізу","C) Дерекқорды жою","D) Плагин орнату","E) SSL бұзу"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"WordPress-та қауіпсіздік үшін wp-config.php файлында не маңызды?",
-    options:["A) Security keys (AUTH_KEY және т.б.)","B) CSS код","C) HTML тегтер","D) Плагин тізімі","E) Медиа файлдар"],
-    correct:0
-  },
-  {
-    topic:"Security",
-    q:"Drupal жүйесінде қауіпсіздік жаңартулары қалай таратылады?",
-    options:["A) Email арқылы","B) Тек GitHub","C) Security advisories (ресми хабарламалар)","D) FTP","E) Форум арқылы"],
-    correct:2
-  },
-  {
-    topic:"Security",
-    q:"Joomla-та әкімшілік панельді қорғаудың тиімді әдісі қандай?",
-    options:["A) CSS өзгерту","B) SQL өзгерту","C) Плагин өшіру","D) Медиа жою","E) Admin URL қорғау және екі факторлы аутентификация"],
-    correct:4
-  },
-  {
-    topic:"Security",
-    q:"CMS-та Least Privilege принципі нені білдіреді?",
-    options:["A) Барлық қолданушыларға толық құқық беру","B) Әр қолданушыға тек қажетті құқық беру","C) Тек админ қолдану","D) Плагиндерді өшіру","E) Парольсіз кіру"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"WordPress-та Wordfence қандай рөл атқарады?",
-    options:["A) SEO","B) Медиа басқару","C) Дизайн","D) Firewall және malware сканер","E) Пайдаланушы қосу"],
-    correct:3
-  },
-  {
-    topic:"Security",
-    q:"Drupal-та модульдерді жаңартпау неге әкелуі мүмкін?",
-    options:["A) Дизайн бұзылады","B) Қауіпсіздік осалдықтары пайда болады","C) Сайт жылдамдайды","D) Медиа жойылады","E) SEO өседі"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"HTTPS қолданудың басты мақсаты қандай?",
-    options:["A) Деректерді шифрлау","B) Сайтты жылдамдату","C) Плагин орнату","D) CSS қорғау","E) SQL өзгерту"],
-    correct:0
-  },
-  {
-    topic:"Security",
-    q:"CMS-та brute force шабуылына қарсы не қолдану керек?",
-    options:["A) CSS фильтр","B) Login attempt limit","C) Image optimization","D) Cache","E) HTML код"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"XSS-тан қорғау үшін не қолдану керек?",
-    options:["A) sanitize және escape функциялары","B) CSS","C) Image","D) Cache","E) Theme"],
-    correct:0
-  },
-  {
-    topic:"Security",
-    q:"CSRF шабуылының мақсаты қандай?",
-    options:["A) Серверді өшіру","B) SQL өзгерту","C) Пайдаланушы атынан әрекет жасау","D) CSS өзгерту","E) Медиа жою"],
-    correct:2
-  },
-  {
-    topic:"Security",
-    q:"WordPress-та SALT кілттері қай файлда сақталады?",
-    options:["A) functions.php","B) wp-content","C) wp-config.php","D) index.php","E) style.css"],
-    correct:2
-  },
-  {
-    topic:"Security",
-    q:"Drupal-та “trusted hosts” не үшін қолданылады?",
-    options:["A) CSS үшін","B) Белгілі домендерден ғана кіруге рұқсат беру","C) Плагин орнату","D) Медиа сақтау","E) SQL өзгерту"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"Brute force шабуылын анықтаудың белгісі қандай?",
-    options:["A) CSS өзгеруі","B) SEO төмендеуі","C) Медиа жүктеу","D) Дизайн өзгеру","E) Көп login әрекеттері"],
-    correct:4
-  },
-  {
-    topic:"Security",
-    q:"CMS-та HTTPS болмаса не қауіп бар?",
-    options:["A) CSS жоғалады","B) Деректер ұсталып қалуы мүмкін","C) Плагин жойылады","D) Theme бұзылады","E) Медиа өшеді"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"WordPress-та file editing-ті өшіру үшін не қолданылады?",
-    options:["A) define('DISALLOW_FILE_EDIT', true);","B) remove_file();","C) disable_edit();","D) wp_stop_edit();","E) file_lock();"],
-    correct:0
-  },
-  {
-    topic:"Security",
-    q:"Drupal-та watchdog не?",
-    options:["A) CSS құрал","B) Лог жүйесі","C) Плагин","D) Медиа құрал","E) Theme"],
-    correct:1
-  },
-  {
-    topic:"Security",
-    q:"CMS-та spam комментарийлерді қалай азайтуға болады?",
-    options:["A) CSS","B) SQL","C) Theme","D) Медиа","E) CAPTCHA"],
-    correct:4
-  },
-  {
-    topic:"Security",
-    q:"CMS-та HTTPS қолданғанда қандай порт пайдаланылады?",
-    options:["A) 21","B) 80","C) 443","D) 25","E) 110"],
-    correct:2
-  },
-  {
-    topic:"Security",
-    q:"CMS-та backup тек дерекқор ма?",
-    options:["A) Иә","B) Жоқ, файлдар да қажет","C) Тек CSS","D) Тек медиа","E) Тек theme"],
-    correct:1
-  },
+  // ========== Security (27 сұрақ) ==========
+  { topic:"Security", q:"CMS жүйелеріндегі ең кең таралған шабуыл түрі қандай?", options:["A) CSS Injection","B) SQL Injection","C) Image attack","D) Font attack","E) Cache overflow"], correct:1 },
+  { topic:"Security", q:"XSS (Cross-Site Scripting) шабуылының мақсаты қандай?", options:["A) Серверді өшіру","B) Зиянды JavaScript енгізу","C) Дерекқорды жою","D) Плагин орнату","E) SSL бұзу"], correct:1 },
+  { topic:"Security", q:"WordPress-та қауіпсіздік үшін wp-config.php файлында не маңызды?", options:["A) Security keys (AUTH_KEY және т.б.)","B) CSS код","C) HTML тегтер","D) Плагин тізімі","E) Медиа файлдар"], correct:0 },
+  { topic:"Security", q:"Drupal жүйесінде қауіпсіздік жаңартулары қалай таратылады?", options:["A) Email арқылы","B) Тек GitHub","C) Security advisories (ресми хабарламалар)","D) FTP","E) Форум арқылы"], correct:2 },
+  { topic:"Security", q:"Joomla-та әкімшілік панельді қорғаудың тиімді әдісі қандай?", options:["A) CSS өзгерту","B) SQL өзгерту","C) Плагин өшіру","D) Медиа жою","E) Admin URL қорғау және екі факторлы аутентификация"], correct:4 },
+  { topic:"Security", q:"CMS-та Least Privilege принципі нені білдіреді?", options:["A) Барлық қолданушыларға толық құқық беру","B) Әр қолданушыға тек қажетті құқық беру","C) Тек админ қолдану","D) Плагиндерді өшіру","E) Парольсіз кіру"], correct:1 },
+  { topic:"Security", q:"WordPress-та Wordfence қандай рөл атқарады?", options:["A) SEO","B) Медиа басқару","C) Дизайн","D) Firewall және malware сканер","E) Пайдаланушы қосу"], correct:3 },
+  { topic:"Security", q:"Drupal-та модульдерді жаңартпау неге әкелуі мүмкін?", options:["A) Дизайн бұзылады","B) Қауіпсіздік осалдықтары пайда болады","C) Сайт жылдамдайды","D) Медиа жойылады","E) SEO өседі"], correct:1 },
+  { topic:"Security", q:"Joomla-та кеңейтімдер (extensions) деген не?", options:["A) CSS файлдары","B) Қосымша функционал модульдер","C) Дерекқор","D) Сервер","E) URL"], correct:1 },
+  { topic:"Security", q:"HTTPS қолданудың басты мақсаты қандай?", options:["A) Деректерді шифрлау","B) Сайтты жылдамдату","C) Плагин орнату","D) CSS қорғау","E) SQL өзгерту"], correct:0 },
+  { topic:"Security", q:"CMS-та brute force шабуылына қарсы не қолдану керек?", options:["A) CSS фильтр","B) Login attempt limit","C) Image optimization","D) Cache","E) HTML код"], correct:1 },
+  { topic:"Security", q:"WordPress-та login қорғаудың қосымша әдісі қандай?", options:["A) wp-admin жою","B) Login URL өзгерту","C) CSS қосу","D) Theme өзгерту","E) Медиа жүктеу"], correct:1 },
+  { topic:"Security", q:"Drupal-та permissions жүйесі не үшін қажет?", options:["A) Дизайн үшін","B) Қол жеткізуді басқару үшін","C) Плагин орнату","D) CSS жазу","E) Медиа жүктеу"], correct:1 },
+  { topic:"Security", q:"Joomla-та ACL (Access Control Level) деген не?", options:["A) CSS стиль","B) Сервер түрі","C) Плагин атауы","D) SQL сұраныс","E) Қолданушылардың құқықтарын басқару жүйесі"], correct:4 },
+  { topic:"Security", q:"CMS-та malware деген не?", options:["A) Дизайн","B) URL","C) Плагин","D) CSS","E) Зиянды бағдарлама"], correct:4 },
+  { topic:"Security", q:"Файл рұқсаттарын дұрыс орнатудың мақсаты?", options:["A) SEO арттыру","B) Дизайн өзгерту","C) Рұқсатсыз кіруді шектеу","D) Плагин қосу","E) Сервер өшіру"], correct:2 },
+  { topic:"Security", q:"Database backup не үшін қажет?", options:["A) Дизайн сақтау","B) Апаттан кейін қалпына келтіру","C) CSS өзгерту","D) Плагин орнату","E) URL өзгерту"], correct:1 },
+  { topic:"Security", q:"CMS-та security plugin орнату не береді?", options:["A) Қорғау, мониторинг, шабуылға қарсы жүйе","B) Тек дизайн","C) Медиа сақтау","D) CSS өзгерту","E) SQL жою"], correct:0 },
+  { topic:"Security", q:"XSS-тан қорғау үшін не қолдану керек?", options:["A) sanitize және escape функциялары","B) CSS","C) Image","D) Cache","E) Theme"], correct:0 },
+  { topic:"Security", q:"CMS-та audit деген не?", options:["A) Дизайн жасау","B) Қауіпсіздік тексерісі","C) Плагин орнату","D) CSS жазу","E) Медиа өңдеу"], correct:1 },
+  { topic:"Security", q:"CSRF шабуылының мақсаты қандай?", options:["A) Серверді өшіру","B) SQL өзгерту","C) Пайдаланушы атынан әрекет жасау","D) CSS өзгерту","E) Медиа жою"], correct:2 },
+  { topic:"Security", q:"WordPress-та SALT кілттері қай файлда сақталады?", options:["A) functions.php","B) wp-content","C) wp-config.php","D) index.php","E) style.css"], correct:2 },
+  { topic:"Security", q:"Joomla-та екі факторлы аутентификация не береді?", options:["A) Дизайн","B) Қосымша қауіпсіздік деңгейі","C) CSS өзгерту","D) Медиа сақтау","E) SEO"], correct:1 },
+  { topic:"Security", q:"Drupal-та “trusted hosts” не үшін қолданылады?", options:["A) CSS үшін","B) Белгілі домендерден ғана кіруге рұқсат беру","C) Плагин орнату","D) Медиа сақтау","E) SQL өзгерту"], correct:1 },
+  { topic:"Security", q:"Brute force шабуылын анықтаудың белгісі қандай?", options:["A) CSS өзгеруі","B) SEO төмендеуі","C) Медиа жүктеу","D) Дизайн өзгеру","E) Көп login әрекеттері"], correct:4 },
+  { topic:"Security", q:"WordPress-та XML-RPC өшіру не үшін қажет?", options:["A) SEO үшін","B) Медиа үшін","C) CSS үшін","D) Brute force шабуылдарын азайту","E) Theme үшін"], correct:3 },
+  { topic:"Security", q:"CMS-та HTTPS болмаса не қауіп бар?", options:["A) CSS жоғалады","B) Деректер ұсталып қалуы мүмкін","C) Плагин жойылады","D) Theme бұзылады","E) Медиа өшеді"], correct:1 },
+  { topic:"Security", q:"Joomla-та admin логинін өзгерту не береді?", options:["A) Қауіпсіздік артады","B) Дизайн","C) SEO өседі","D) Медиа өзгереді","E) CSS жаңарады"], correct:0 },
+  { topic:"Security", q:"WordPress-та file editing-ті өшіру үшін не қолданылады?", options:["A) define('DISALLOW_FILE_EDIT', true);","B) remove_file();","C) disable_edit();","D) wp_stop_edit();","E) file_lock();"], correct:0 },
+  { topic:"Security", q:"Drupal-та watchdog не?", options:["A) CSS құрал","B) Лог жүйесі","C) Плагин","D) Медиа құрал","E) Theme"], correct:1 },
+  { topic:"Security", q:"CMS-та spam комментарийлерді қалай азайтуға болады?", options:["A) CSS","B) SQL","C) Theme","D) Медиа","E) CAPTCHA"], correct:4 },
+  { topic:"Security", q:"WordPress-та admin user қолдану неге қауіпті?", options:["A) Дизайн бұзылады","B) Оны оңай болжауға болады","C) SEO төмендейді","D) Медиа жоғалады","E) CSS өшеді"], correct:1 },
+  { topic:"Security", q:"CMS-та ең қауіпсіз пароль ұзындығы қандай?", options:["A) 4","B) 6","C) 8","D) 12+","E) 3"], correct:3 },
+  { topic:"Security", q:"WordPress-та debug режимін production-да қосу қауіпті ме?", options:["A) Жоқ","B) Иә, ақпарат ашылады","C) Тек CSS әсер етеді","D) Медиаға әсер етеді","E) Theme ғана"], correct:1 },
+  { topic:"Security", q:"Drupal-та update manager не істейді?", options:["A) CSS","B) Жаңартуларды тексереді","C) Медиа","D) Theme","E) SQL"], correct:1 },
+  { topic:"Security", q:"CMS-та phishing шабуылы не?", options:["A) CSS шабуыл","B) Жалған сайт арқылы дерек ұрлау","C) Медиа жүктеу","D) Theme өзгерту","E) SQL қосу"], correct:1 },
+  { topic:"Security", q:"WordPress-та plugin update не үшін керек?", options:["A) Дизайн","B) Theme","C) CSS","D) Медиа","E) Қауіпсіздік"], correct:4 },
+  { topic:"Security", q:"Joomla-та логин формасын қорғау үшін не қосуға болады?", options:["A) CSS","B) CAPTCHA","C) Медиа","D) Theme","E) SQL"], correct:1 },
+  { topic:"Security", q:"Drupal-та security module мысалы қандай?", options:["A) Views","B) Theme UI","C) Media","D) Security Kit","E) Cache API"], correct:3 },
+  { topic:"Security", q:"CMS-та лог файлдар не үшін қажет?", options:["A) Дизайн","B) CSS","C) Оқиғаларды бақылау","D) Медиа","E) Theme"], correct:2 },
+  { topic:"Security", q:"Joomla-та қауіпсіздік үшін қандай кеңейтім танымал?", options:["A) Elementor","B) Admin Tools","C) WooCommerce","D) Views","E) Gutenberg"], correct:1 },
+  { topic:"Security", q:"WordPress-та wp-content/uploads папкасын қорғаудың мақсаты қандай?", options:["A) Зиянды файл жүктеуді болдырмау","B) Дизайн өзгерту","C) CSS сақтау","D) Theme орнату","E) SQL сақтау"], correct:0 },
+  { topic:"Security", q:"Drupal-та user roles не үшін?", options:["A) CSS","B) Құқық басқару","C) Медиа","D) Theme","E) SQL"], correct:1 },
+  { topic:"Security", q:"CMS-та HTTPS қолданғанда қандай порт пайдаланылады?", options:["A) 21","B) 80","C) 443","D) 25","E) 110"], correct:2 },
+  { topic:"Security", q:"Joomla-та admin folder қорғау қалай?", options:["A) CSS","B) Пароль және IP фильтр","C) Медиа","D) Theme","E) SQL"], correct:1 },
+  { topic:"Security", q:"Drupal-та cache clear не үшін?", options:["A) Дизайн","B) Медиа","C) CSS","D) Жаңартудан кейін дұрыс жұмыс","E) Theme"], correct:3 },
+  { topic:"Security", q:"WordPress-та wp-admin URL-ін өзгерту не береді?", options:["A) Дизайн жақсарады","B) Автоматты шабуылдарды азайтады","C) Медиа жүктеу жылдамдайды","D) Theme өзгереді","E) CSS жаңарады"], correct:1 },
 
-  // --- WordPress ---
-  {
-    topic:"WordPress",
-    q:"WordPress қандай бағдарламалау тілінде жазылған?",
-    options:["A) Java","B) Python","C) Ruby on Rails","D) PHP","E) HTML"],
-    correct:3
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-те Akismet-ті белсендіру үшін қандай талаптар қойылады?",
-    options:["A) Akismet пайдаланушы аты мен құпия сөз","B) WordPress.org құпия сөзінің соңғы төрт саны","C) Сіздің электрондық пошта мекенжайыңыз","D) Akismet API кілті","E) Google есептік жазбаңыз"],
-    correct:3
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-бұл түрі:",
-    options:["A) Content Management System","B) Customer Relationship Manager","C) Coded Content Silo","D) Content Production Developer","E) Content Relationship Manager"],
-    correct:0
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress.com мен WordPress.org немен ерекшеленді?",
-    options:[
+  // ========== WordPress (78 сұрақ) ==========
+  { topic:"WordPress", q:"WordPress қандай бағдарламалау тілінде жазылған?", options:["A) Java","B) Python","C) Ruby on Rails","D) PHP","E) HTML"], correct:3 },
+  { topic:"WordPress", q:"WordPress-те Akismet-ті белсендіру үшін қандай талаптар қойылады?", options:["A) Akismet пайдаланушы аты мен құпия сөз","B) WordPress.org құпия сөзінің соңғы төрт саны","C) Сіздің электрондық пошта мекенжайыңыз","D) Akismet API кілті","E) Google есептік жазбаңыз"], correct:3 },
+  { topic:"WordPress", q:"WordPress-бұл түрі:", options:["A) Content Management System","B) Customer Relationship Manager","C) Coded Content Silo","D) Content Production Developer","E) Content Relationship Manager"], correct:0 },
+  { topic:"WordPress", q:"WordPress.com мен WordPress.org немен ерекшеленді?", options:[
       "A) WordPress.com – футболкалар сатып алатын орын, WordPress.org – блогыңызды орналастыруға арналған тегін орын.",
       "B) WordPress.org – коммерциялық емес кітап басып шығару қызметі. WordPress.com – бұл блог жүргізу платформасы.",
       "C) Бұл трюк сұрақ - екеуінің бір сайтқа апаратыны маңызды емес.",
       "D) WordPress.com тегін WordPress блог хостингін ұсынады, WordPress.org тегін хостинг бағдарламалық құралын жүктеп алуды ұсынады.",
       "E) WordPress.com – блогыңызды орналастыруға арналған тегін орын, WordPress.org – блог жүргізу платформасы."
-    ],
-    correct:3
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"WordPress блогында авторлардың максималды саны қанша болуы мүмкін?",
-    options:["A) 10,0","B) 1,0","C) Шексіз","D) 2.0","E) 5.0"],
-    correct:2
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-та тақырыптарды (themes) қай жерден өзгертуге болады?",
-    options:["A) Параметрлер","B) Құралдар","C) Сыртқы түрі (Appearance)","D) Пайдаланушылар","E) Жазбалар"],
-    correct:2
-  },
-  {
-    topic:"WordPress",
-    q:"Қандай параметр функциялардың, сыныптардың және негізгі WordPress мазмұн каталогының орнын сақтайды?",
-    options:["A) WPINC","B) WP_INC","C) WP_lNCLUDE","D) WPINCLUDE","E) WP_INC_LUDE"],
-    correct:0
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress сайтыңызға плагин қосудың ең жақсы жолы қандай?",
-    options:[
+  { topic:"WordPress", q:"WordPress блогында авторлардың максималды саны қанша болуы мүмкін?", options:["A) 10,0","B) 1,0","C) Шексіз","D) 2.0","E) 5.0"], correct:2 },
+  { topic:"WordPress", q:"WordPress-та тақырыптарды (themes) қай жерден өзгертуге болады?", options:["A) Параметрлер","B) Құралдар","C) Сыртқы түрі (Appearance)","D) Пайдаланушылар","E) Жазбалар"], correct:2 },
+  { topic:"WordPress", q:"Қандай параметр функциялардың, сыныптардың және негізгі WordPress мазмұн каталогының орнын сақтайды?", options:["A) WPINC","B) WP_INC","C) WP_lNCLUDE","D) WPINCLUDE","E) WP_INC_LUDE"], correct:0 },
+  { topic:"WordPress", q:"WordPress сайтыңызға плагин қосудың ең жақсы жолы қандай?", options:[
       "A) WordPress плагиндерді қолдамайды",
       "B) Сервер администраторы сізге плагинді қосуы керек",
       "C) Навигация мәзірінен «Плагиндер» астындағы «Жаңа қосу» тармағын таңдау",
       "D) Навигация мәзірінен «Плагиндер» бөліміндегі «Плагиндерді өңдеу» тармағын таңдау",
       "E) Автор сізге плагинді қосуы керек"
-    ],
-    correct:2
+    ], correct:2
   },
-  {
-    topic:"WordPress",
-    q:"Бір бетте көрсетілетін хабарламалар санын шектеу үшін қолданылатын WP_Query беттеу параметрінің аты қалай?",
-    options:["A) per_page","B) total","C) posts_per_page","D) limit","E) total_page"],
-    correct:2
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-та transient API не үшін қолданылады?",
-    options:["A) CSS сақтау","B) Уақытша кэш деректерін сақтау","C) Плагин орнату","D) Қолданушы қосу","E) Медиа жүктеу"],
-    correct:1
-  },
-  {
-    topic:"WordPress",
-    q:"Төмендегі шартты операторлардың қайсысы ағымдағы пайдаланушының суперадминистратор екенін анықтайды?",
-    options:["A) is_super_admin()","B) is_admin_user()","C) is_admin()","D) is_super_admin_user()","E) is_user()"],
-    correct:0
-  },
-  {
-    topic:"WordPress",
-    q:"Виджеттер қолдау көрсетілетін тақырыптармен не істей алады?",
-    options:[
+  { topic:"WordPress", q:"Бір бетте көрсетілетін хабарламалар санын шектеу үшін қолданылатын WP_Query беттеу параметрінің аты қалай?", options:["A) per_page","B) total","C) posts_per_page","D) limit","E) total_page"], correct:2 },
+  { topic:"WordPress", q:"WordPress-та transient API ne үшін қолданылады?", options:["A) CSS сақтау","B) Уақытша кэш деректерін сақтау","C) Плагин орнату","D) Қолданушы қосу","E) Медиа жүктеу"], correct:1 },
+  { topic:"WordPress", q:"Төмендегі шартты операторлардың қайсысы ағымдағы пайдаланушының суперадминистратор екенін анықтайды?", options:["A) is_super_admin()","B) is_admin_user()","C) is_admin()","D) is_super_admin_user()","E) is_user()"], correct:0 },
+  { topic:"WordPress", q:"Төмендегілердің қайсысы сеансты ұрлаудың алдын алудың ең тиімді әдісі болып табылады?", options:["A) Сенімді құпия сөздер","B) Сеанс мониторингі","C) Шифрлау","D) Портты сүзу брандмауэрі","E) Кілт"], correct:2 },
+  { topic:"WordPress", q:"Виджеттер қолдау көрсетілетін тақырыптармен не істей алады?", options:[
       "A) Бейнені жазбаларыңыздың негізгі бөлігіне орналастыру",
       "B) Блог жазбаларыңыздағы емлені тексеру",
       "C) Тақырыптың түстері мен қаріптерін өзгерту",
       "D) Мазмұнды бүйірлік тақталарға қосу",
       "E) Плагиндерді қосу"
-    ],
-    correct:3
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"WordPress мультисайтына әдепкі бойынша қандай медиа түрін жүктеуге болмайды?",
-    options:["A) png","B) gif","C) bmp","D) jpg","E) jpeg"],
-    correct:2
-  },
-  {
-    topic:"WordPress",
-    q:"Блогыңызға виджетті қосудың ең жақсы жолы қандай?",
-    options:[
+  { topic:"WordPress", q:"WordPress мультисайтына әдепкі бойынша қандай медиа түрін жүктеуге болмайды?", options:["A) png","B) gif","C) bmp","D) jpg","E) jpeg"], correct:2 },
+  { topic:"WordPress", q:"Блогыңызға виджетті қосудың ең жақсы жолы қандай?", options:[
       "A) Сервер бағдарламашысы оны сізге қосуы керек",
       "B) Виджет кодын көшіріп, блогыңызға қою",
       "C) Виджет коды бар файлды серверге жүктеу",
       "D) «Сыртқы түрі» астындағы «Виджеттер» бөліміне өтіп, қолжетімді виджеттерді қарап және оларды орнату",
       "E) WordPress қолдамайды"
-    ],
-    correct:3
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"WordPress-та capability деген не?",
-    options:["A) Плагин","B) Пайдаланушының нақты рұқсаты","C) Дерекқор кестесі","D) CSS класс","E) URL параметр"],
-    correct:1
+  { topic:"WordPress", q:"WordPress-та capability деген не?", options:["A) Плагин","B) Пайдаланушының нақты рұқсаты","C) Дерекқор кестесі","D) CSS класс","E) URL параметр"], correct:1 },
+  { topic:"WordPress", q:"Мен WordPress сайтының сақтық көшірмесін жасадым. Кем дегенде, көшірмелерді жасау керек болады", options:["A) wpcontent папкасы","B) мәліметтер базасы және мазмұн папкасы","C) ӨТІРІК","D) деректер базасы","E) wp-admin папкасы"], correct:1 },
+  { topic:"WordPress", q:"WordPress бүйірлік тақтасының элементтері әдетте аталады:", options:["A) Мазмұн аймақтары","B) Мазмұн салалары","C) Блоктар","D) Виджеттер","E) Колонтитулдар"], correct:3 },
+  { topic:"WordPress", q:"Пайдаланушыларды басқа URL мекенжайына қайта бағыттау үшін қандай WordPress функциясын пайдалану керек?", options:["A) wp_redirect","B) redirect","C) redirect_user","D) auth_redirect","E) wp_redirect_user"], correct:0 },
+  { topic:"WordPress", q:"$wpdb объектісі не үшін қолданылады?", options:["A) CSS басқару","B) Дерекқормен тікелей жұмыс","C) Плагин орнату","D) JavaScript қосу","E) Медиа өңдеу"], correct:1 },
+  { topic:"WordPress", q:"WordPress қандай бағдарламалық қамтамасыз ету мысалы болып табылады?", options:["A) Ашық бастапқы код","B) Windows","C) Linux","D) Меншікті","E) Кілтпен"], correct:0 },
+  { topic:"WordPress", q:"prepare() әдісі $wpdb ішінде ne үшін қажет?", options:["A) CSS дайындау","B) SQL injection-нан қорғау","C) Плагинді іске қосу","D) HTML құру","E) URL өзгерту"], correct:1 },
+  { topic:"WordPress", q:"Плагинді іске қосқаннан кейін келесі қадам не?", options:["A) SQL қосу","B) Админ панельден активтеу","C) CSS жазу","D) Сервер қайта қосу","E) wp-config өзгерту"], correct:1 },
+  { topic:"WordPress", q:"WordPress-тегі сайт администраторының панеліне кіру үшін браузердің мекен-жай жолында сайттың атына қиғаш сызық(слэш) арқылы ... қосу керек.", options:["A) Wp-administrator","B) Wp-login.php","C) Wp-admin","D) Admin","E) Wp-content"], correct:2 },
+  { topic:"WordPress", q:"WordPress плагиндері қажет, ...", options:[
+      "A) сайтты басқару мүмкіндіктерін және сайтқа кірушілердің мүмкіндіктерін кеңейту",
+      "B) тек сайтты басқару мүмкіндіктерін кеңейту үшін",
+      "C) сайтқа кірушілердің мүмкіндіктерін кеңейту үшін ғана",
+      "D) жалпы сайтты жылдамдату үшін",
+      "E) тек мәліметтер базасын толтыру үшін"
+    ], correct:0
   },
-  {
-    topic:"WordPress",
-    q:"Мен WordPress сайтының сақтық көшірмесін жасадым. Кем дегенде, көшірмелерді жасау керек болады",
-    options:["A) wpcontent папкасы","B) мәліметтер базасы және мазмұн папкасы","C) ӨТІРІК","D) деректер базасы","E) wp-admin папкасы"],
-    correct:1
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress бүйірлік тақтасының элементтері әдетте аталады:",
-    options:["A) Мазмұн аймақтары","B) Мазмұн салалары","C) Блоктар","D) Виджеттер","E) Колонтитулдар"],
-    correct:3
-  },
-  {
-    topic:"WordPress",
-    q:"Пайдаланушыларды басқа URL мекенжайына қайта бағыттау үшін қандай WordPress функциясын пайдалану керек?",
-    options:["A) wp_redirect","B) redirect","C) redirect_user","D) auth_redirect","E) wp_redirect_user"],
-    correct:0
-  },
-  {
-    topic:"WordPress",
-    q:"$wpdb объектісі не үшін қолданылады?",
-    options:["A) CSS басқару","B) Дерекқормен тікелей жұмыс","C) Плагин орнату","D) JavaScript қосу","E) Медиа өңдеу"],
-    correct:1
-  },
-  {
-    topic:"WordPress",
-    q:"prepare() әдісі $wpdb ішінде не үшін қажет?",
-    options:["A) CSS дайындау","B) SQL injection-нан қорғау","C) Плагинді іске қосу","D) HTML құру","E) URL өзгерту"],
-    correct:1
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-тегі сайт администраторының панеліне кіру үшін ... қосу керек.",
-    options:["A) Wp-administrator","B) Wp-login.php","C) Wp-admin","D) Admin","E) Wp-content"],
-    correct:2
-  },
-  {
-    topic:"WordPress",
-    q:"___________ өз хабарламаларын жариялай, өңдей және жоя алады. Олар беттерді жаза алмайды.",
-    options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"],
-    correct:1
-  },
-  {
-    topic:"WordPress",
-    q:"WordPress-ті ... етіп орнатуға болады.",
-    options:[
+  { topic:"WordPress", q:"___________ өз хабарламаларын жариялай, өңдей және жоя алады. Олар беттерді жаза алмайды. Олар медианың кейбір түрлерін жүктей алады және тек HTML тегтерінің шектеулі жиынтығын пайдалануға рұқсат етіледі.", options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"], correct:1 },
+  { topic:"WordPress", q:"WordPress-ті ... етіп орнатуға болады.", options:[
       "A) Көптеген тақырыптар, бірақ олардың біреуі ғана белсенді қолданылады",
       "B) Бір уақытта жұмыс істейтін көптеген тақырыптар",
       "C) Бірнеше стандартты тақырыптар және бір қосымша",
       "D) Дизайн галерея сияқты өзгеретіндей шектеусіз тақырыптар",
       "E) Әр түрлі уақытта жұмыс істейтін көптеген тақырыптар"
-    ],
-    correct:0
+    ], correct:0
   },
-  {
-    topic:"WordPress",
-    q:"Төмендегі функциялардың қайсысы WordPress-ке әкімшілік мәзір элементін қосу үшін пайдаланылады?",
-    options:["A) add_menu_page();","B) add_admin_item();","C) add_admin_page();","D) add_admin_option();","E) add_menu_option();"],
-    correct:0
+  { topic:"WordPress", q:"Төмендегі функциялардың қайсысы WordPress-ке әкімшілік мәзір элементін қосу үшін пайдаланылады?", options:["A) add_menu_page();","B) add_admin_item();","C) add_admin_page();","D) add_admin_option();","E) add_menu_option();"], correct:0 },
+  { topic:"WordPress", q:"WordPress үшін қандай дерекқор артықшылықтары қажет?", options:["A) insert, delete, update, drop and alter","B) select, insert, delete, update, create, drop and alter","C) insert, delete, update, create, drop and alter","D) insert and delete","E) update, drop and alter"], correct:1 },
+  { topic:"WordPress", q:"Төмендегілердің қайсысы көптілді қамтамасыз ететін WordPress плагинінің мысалы болып табылады?", options:["A) WP Super Cache","B) qTranslate","C) BuddyPress","D) Hotfix","E) Contributo"], correct:1 },
+  { topic:"WordPress", q:"WordPress-те қанша кірістірілген пайдаланушы рөлі бар?", options:["A) 3","B) 4","C) 5","D) 6","E) 7"], correct:2 },
+  { topic:"WordPress", q:"Төмендегілердің қайсысы WordPress веб-сайтын бір серверден екіншісіне жылжытудың жылдам жолы болып табылады?", options:[
+      "A) Тасымалдау плагинін пайдалану",
+      "B) Жаңа WordPress орнату",
+      "C) wp-admin интерфейсі арқылы XML экспортын пайдалану",
+      "D) Жаңа WordPress орнату және тақырып пен плагин каталогын көшіру.",
+      "E) WordPress файлдары мен дерекқорды түпнұсқадан мақсатты серверге көшіру"
+    ], correct:0
   },
-  {
-    topic:"WordPress",
-    q:"WordPress-те қанша кірістірілген пайдаланушы рөлі бар?",
-    options:["A) 3","B) 4","C) 5","D) 6","E) 7"],
-    correct:2
+  { topic:"WordPress", q:"WordPress-ті әдепкі бойынша келесі дерекқорлардың қайсысына орнатуға болады?", options:["A) MySQL","B) Oracle Database","C) Microsoft SQL Server","D) PostgreSQL","E) MongoDB"], correct:0 },
+  { topic:"WordPress", q:"__________ өз профильдерін басқара алады, бірақ әкімшілік аймағында ештеңе істей алмайды.", options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"], correct:3 },
+  { topic:"WordPress", q:"Wordpress-те ағымдағы беттің тақырыбы қандай функция арқылы көрсетіледі?", options:["A) get_the_title()","B) content_title()","C) page_name()","D) post_name()","E) content_name()"], correct:0 },
+  { topic:"WordPress", q:"Тұрақты сілтемелерді SEO үшін оңтайландыру үшін келесі әдістердің қайсысын қолдануға болады?", options:["A) Мәліметтер базасын жаңарту","B) Бастапқы кодты өзгерту","C) Конфигурация файлында функция параметрі","D) Администратор параметрлеріндегі функция параметрі","E) Бетті жаңарту"], correct:3 },
+  { topic:"WordPress", q:"__________ кез келген пайдаланушы жазған жазбалар мен беттерді жариялай, өңдей және жоя алады. Олар файлдардың белгілі бір түрлерін жүктей алады және шектеусіз HTML жаза алады. Олар сілтемелер мен санаттарды, сондай-ақ қалыпты пікірлерді басқара алады. Редакторлар мен администраторлар жеке хабарламалар мен беттерді оқуға рұқсат етілген жалғыз пайдаланушылар болып табылады.", options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"], correct:2 },
+  { topic:"WordPress", q:"Стандартты құралдармен WordPress мәзірі ... жасалады.", options:[
+      "A) Тек беттерден, жазбалардан және рубрикалардан",
+      "B) Тек ерікті сілтемелерден",
+      "C) Тек беттерден, рубиктерден және ерікті сілтемелерден",
+      "D) Беттерден, жазбалардан, рубиктерден және ерікті сілтемелерден",
+      "E) Тек жазбалар мен рубриктерден"
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"WordPress-ті әдепкі бойынша келесі дерекқорлардың қайсысына орнатуға болады?",
-    options:["A) MySQL","B) Oracle Database","C) Microsoft SQL Server","D) PostgreSQL","E) MongoDB"],
-    correct:0
+  { topic:"WordPress", q:"Теңшелетін өріс деректері сақталатын дерекқордағы кесте қалай аталады?", options:["A) wp_custommeta","B) wp_options","C) wp_terms","D) wp_postmeta","E) wp_includes"], correct:3 },
+  { topic:"WordPress", q:"WordPress қандай бағдарламалау тілінде жазылған?", options:["A) Java","B) Python","C) Ruby on Rails","D) PHP","E) HTML"], correct:3 },
+  { topic:"WordPress", q:"WordPress-те Akismet-ті белсендіру үшін қандай талаптар қойылады?", options:["A) Akismet пайдаланушы аты мен құпия сөз","B) WordPress.org құпия сөзінің соңғы төрт саны","C) Сіздің электрондық пошта мекенжайыңыз","D) Akismet API кілті","E) Google есептік жазбаңыз"], correct:3 },
+  { topic:"WordPress", q:"WordPress-бұл түрі:", options:["A) Content Management System","B) Customer Relationship Manager","C) Coded Content Silo","D) Content Production Developer","E) Content Relationship Manager"], correct:0 },
+  { topic:"WordPress", q:"Виджеттер қолдау көрсетілетін тақырыптармен ne істей алады?", options:[
+      "A) Бейнені жазбаларыңыздың негізгі бөлігіне орналастыру",
+      "B) Блог жазбаларыңыздағы емлені тексеру",
+      "C) Тақырыптың түстері мен қаріптерін өзгерту",
+      "D) Мазмұнды бүйірлік тақталарға қосу",
+      "E) Плагиндерді қосу"
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"__________ өз профильдерін басқара алады, бірақ әкімшілік аймағында ештеңе істей алмайды.",
-    options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"],
-    correct:3
+  { topic:"WordPress", q:"WordPress мультисайтына әдепкі бойынша қандай медиа түрін жүктеуге болмайды?", options:["A) png","B) gif","C) bmp","D) jpg","E) jpeg"], correct:2 },
+  { topic:"WordPress", q:"Блогыңызға виджетті қосудың ең жақсы жолы қандай?", options:[
+      "A) Сервер бағдарламашысы оны сізге қосуы керек",
+      "B) Виджет кодын көшіріп, блогыңызға қою",
+      "C) Виджет коды бар файлды серверге жүктеу",
+      "D) «Сыртқы түрі» астындағы «Виджеттер» бөліміне өтіп, қолжетімді виджеттерді қарап және оларды орнату",
+      "E) WordPress қолдамайды"
+    ], correct:3
   },
-  {
-    topic:"WordPress",
-    q:"Wordpress-те ағымдағы беттің тақырыбы қандай функция арқылы көрсетіледі?",
-    options:["A) get_the_title()","B) content_title()","C) page_name()","D) post_name()","E) content_name()"],
-    correct:0
+  { topic:"WordPress", q:"___________ өз хабарламаларын жариялай, өңдей және жоя алады. Олар беттерді жаза алмайды. Олар медианың кейбір түрлерін жүктей алады және тек HTML тегтерінің шектеулі жиынтығын пайдалануға рұқсат етіледі.", options:["A) Қатысушы","B) Автор","C) Редактор","D) Жазылушы","E) Администратор"], correct:1 },
+  { topic:"WordPress", q:"WordPress-ті ... етіп орнатуға болады.", options:[
+      "A) Көптеген тақырыптар, бірақ олардың біреуі ғана белсенді қолданылады",
+      "B) Бір уақытта жұмыс істейтін көптеген тақырыптар",
+      "C) Бірнеше стандартты тақырыптар және бір қосымша",
+      "D) Дизайн галерея сияқты өзгеретіндей шектеусіз тақырыптар",
+      "E) Әр түрлі уақытта жұмыс істейтін көптеген тақырыптар"
+    ], correct:0
   },
-  {
-    topic:"WordPress",
-    q:"Теңшелетін өріс деректері сақталатын дерекқордағы кесте қалай аталады?",
-    options:["A) wp_custommeta","B) wp_options","C) wp_terms","D) wp_postmeta","E) wp_includes"],
-    correct:3
+  { topic:"WordPress", q:"Стандартты құралдармен WordPress мәзірі ... жасалады.", options:[
+      "A) Тек беттерден, жазбалардан және рубрикалардан",
+      "B) Тек ерікті сілтемелерден",
+      "C) Тек беттерден, рубиктерден және ерікті сілтемелерден",
+      "D) Беттерден, жазбалардан, рубиктерден және ерікті сілтемелерден",
+      "E) Тек жазбалар мен рубриктерден"
+    ], correct:3
   },
+  { topic:"WordPress", q:"Теңшелетін өріс деректері сақталатын дерекқордағы кесте қалай аталады?", options:["A) wp_custommeta","B) wp_options","C) wp_terms","D) wp_postmeta","E) wp_includes"], correct:3 },
 ];
 
-// ---- Quiz logic ----
 const QUIZ_SIZE = 30;
 let current = [];
 
 const elQuiz = document.getElementById('quiz');
 const elStat = document.getElementById('stat');
 const btnNew = document.getElementById('btnNew');
-const btnCheck = document.getElementById('btnCheck');
 const btnReset = document.getElementById('btnReset');
 
 function shuffle(arr){
@@ -693,13 +353,64 @@ function shuffle(arr){
 }
 function letters(i){ return ["A","B","C","D","E"][i] ?? "?"; }
 
-function newQuiz(){
-  const shuffled = shuffle(BANK);
-  current = shuffled.slice(0, Math.min(QUIZ_SIZE, shuffled.length));
-  render();
-  elStat.textContent = `Сұрақ саны: ${current.length}. Тақырыптар аралас.`;
-  btnCheck.disabled = false;
-  window.scrollTo({top:0, behavior:"smooth"});
+function escapeHtml(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function getSelected(idx){
+  const checked = document.querySelector(`input[name="q${idx}"]:checked`);
+  return checked ? Number(checked.value) : null;
+}
+
+function updateStat(){
+  let answered = 0, correct = 0;
+  current.forEach((item, idx)=>{
+    const chosen = getSelected(idx);
+    if(chosen !== null){
+      answered++;
+      if(chosen === item.correct) correct++;
+    }
+  });
+  elStat.textContent = `Белгіленгені: ${answered}/${current.length} | Дұрысы: ${correct}/${current.length}`;
+}
+
+function showImmediate(idx){
+  const item = current[idx];
+  const chosen = getSelected(idx);
+  const card = document.querySelector(`.qcard[data-idx="${idx}"]`);
+  if(!card) return;
+
+  // Тазалау: ескі нәтиже + бояулар
+  card.querySelectorAll('.result').forEach(x=>x.remove());
+  card.querySelectorAll('label.opt').forEach(l=>l.classList.remove('correct','wrong'));
+
+  if(chosen === null){
+    updateStat();
+    return;
+  }
+
+  // Label-дарды бояу
+  const labels = card.querySelectorAll('label.opt');
+  labels.forEach((lab, optIdx)=>{
+    if(optIdx === item.correct) lab.classList.add('correct');
+    if(optIdx === chosen && chosen !== item.correct) lab.classList.add('wrong');
+  });
+
+  const isCorrect = chosen === item.correct;
+  const res = document.createElement('div');
+  res.className = 'result ' + (isCorrect ? 'good' : 'bad');
+  res.innerHTML = `
+    <div><b>${isCorrect ? "Дұрыс" : "Қате"}</b></div>
+    <div>Сенің жауабың: <b>${letters(chosen)}</b> | Дұрыс жауап: <b>${letters(item.correct)}</b></div>
+  `;
+  card.appendChild(res);
+
+  updateStat();
 }
 
 function render(){
@@ -724,20 +435,38 @@ function render(){
 
     item.options.forEach((optText, optIdx)=>{
       const id = `q${idx}_o${optIdx}`;
+
+      const input = document.createElement('input');
+      input.type = "radio";
+      input.name = `q${idx}`;
+      input.id = id;
+      input.value = String(optIdx);
+      input.addEventListener('change', ()=> showImmediate(idx)); // МІНЕ: бірден тексереді
+
       const lab = document.createElement('label');
       lab.className = 'opt';
       lab.setAttribute('for', id);
-      lab.innerHTML = `
-        <input type="radio" name="q${idx}" id="${id}" value="${optIdx}">
-        <div class="letter">${letters(optIdx)})</div>
-        <div class="otext">${escapeHtml(optText.replace(/^[A-E]\)\s*/,'')).trim()}</div>
-      `;
+
+      const cleanText = optText.replace(/^[A-E]\)\s*/,'').trim();
+      lab.appendChild(input);
+
+      const letter = document.createElement('div');
+      letter.className = 'letter';
+      letter.textContent = `${letters(optIdx)})`;
+
+      const txt = document.createElement('div');
+      txt.className = 'otext';
+      txt.innerHTML = escapeHtml(cleanText);
+
+      lab.appendChild(letter);
+      lab.appendChild(txt);
+
       opts.appendChild(lab);
     });
 
     const note = document.createElement('div');
     note.className = 'note';
-    note.textContent = "Жауапты таңда да, соңында “Тексеру” батырмасын бас.";
+    note.textContent = "Жауап таңдасаң — бірден дұрыс/қате шығады және дұрыс жауап боялады.";
 
     card.appendChild(head);
     card.appendChild(opts);
@@ -745,11 +474,15 @@ function render(){
 
     elQuiz.appendChild(card);
   });
+
+  updateStat();
 }
 
-function getSelected(idx){
-  const checked = document.querySelector(`input[name="q${idx}"]:checked`);
-  return checked ? Number(checked.value) : null;
+function newQuiz(){
+  const shuffled = shuffle(BANK);
+  current = shuffled.slice(0, Math.min(QUIZ_SIZE, shuffled.length));
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
 function resetSelections(){
@@ -757,57 +490,14 @@ function resetSelections(){
     document.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>r.checked=false);
   });
   document.querySelectorAll('.result').forEach(x=>x.remove());
-  elStat.textContent = `Таңдаулар тазаланды. Сұрақ саны: ${current.length}.`;
-  btnCheck.disabled = false;
-}
-
-function grade(){
-  let correctCount = 0;
-  let answered = 0;
-
-  // remove old results
-  document.querySelectorAll('.result').forEach(x=>x.remove());
-
-  current.forEach((item, idx)=>{
-    const chosen = getSelected(idx);
-    if(chosen !== null) answered++;
-
-    const isCorrect = (chosen === item.correct);
-    if(isCorrect) correctCount++;
-
-    const card = document.querySelector(`.qcard[data-idx="${idx}"]`);
-    const res = document.createElement('div');
-    res.className = 'result ' + (isCorrect ? 'good' : 'bad');
-
-    const correctLetter = letters(item.correct);
-    const chosenLetter = chosen === null ? "—" : letters(chosen);
-
-    res.innerHTML = `
-      <div><b>${isCorrect ? "Дұрыс" : "Қате"}</b></div>
-      <div>Сенің жауабың: <b>${chosenLetter}</b> &nbsp;|&nbsp; Дұрыс жауап: <b>${correctLetter}</b></div>
-    `;
-    card.appendChild(res);
-  });
-
-  const total = current.length;
-  elStat.textContent = `Нәтиже: ${correctCount}/${total}. Белгіленгені: ${answered}/${total}.`;
-  btnCheck.disabled = true;
-}
-
-function escapeHtml(s){
-  return String(s)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  document.querySelectorAll('label.opt').forEach(l=>l.classList.remove('correct','wrong'));
+  updateStat();
 }
 
 btnNew.addEventListener('click', newQuiz);
-btnCheck.addEventListener('click', grade);
 btnReset.addEventListener('click', resetSelections);
 
-// старт
+// start
 newQuiz();
 </script>
 </body>
